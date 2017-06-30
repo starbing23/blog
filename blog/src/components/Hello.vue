@@ -3,7 +3,7 @@
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
     <ul>
-      <li><router-link to="/foos">Go to Foos</router-link></li>
+      <li><router-link to="/Blogs">Go to Blogs</router-link></li>
     </ul>
   </div>
 </template>

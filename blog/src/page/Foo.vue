@@ -1,5 +1,5 @@
 <template>
     <div>
-        Foo's ID is {{ $route.params.id }}
+        Blog's ID is {{ $route.params.id }}
     </div>
 </template>

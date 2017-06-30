@@ -1,10 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Hello from '@/components/Hello'
-import Foos from '@/components/Foos'
-import Foo from '@/components/Foo'
+import Blogs from '@/page/Blogs'
+import Blog from '@/page/Blog'
+import Works from '@/page/Works'
+import Contact from '@/page/Contact'
 
 Vue.use(Router)
+Vue.use(BootstrapVue)
 
 export default new Router({
   routes: [
@@ -14,14 +20,24 @@ export default new Router({
       component: Hello
     },
     {
-      name: 'Foos',
-      path: '/foos',
-      component: Foos
+      name: 'Blogs',
+      path: '/Blogs',
+      component: Blogs
     },
     {
-      name: 'Foo',
-      path: '/foo/:id',
-      component: Foo
+      name: 'Blog',
+      path: '/Blog/:id',
+      component: Blog
+    },
+    {
+      name: 'Works',
+      path: '/Works',
+      component: Works
+    },
+    {
+      name: 'Contact',
+      path: '/Contact',
+      component: Contact
     }
   ]
 })
