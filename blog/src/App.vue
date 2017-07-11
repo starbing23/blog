@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <b-navbar toggleable type="inverse" variant="success">
-      <b-link class="navbar-brand">
-        <span>Bin</span>
+      <b-link to="/" class="navbar-brand">
+          <span>Bin</span>
       </b-link>
       <b-collapse is-nav id="nav_collapse">
         <b-nav is-nav-bar class="ml-auto">
@@ -17,30 +17,14 @@
 </template>
 
 <script>
+
+import Navs from './navs.js'
+
 export default {
   name: 'app',
   data () {
     return {
-      navs: [
-        {
-          name: 'Works',
-          link: {
-            name: 'Works'
-          }
-        },
-        {
-          name: 'Blogs',
-          link: {
-            name: 'Blogs'
-          }
-        },
-        {
-          name: 'Contact',
-          link: {
-            name: 'Contact'
-          }
-        }
-      ]
+      navs: Navs.navs
     }
   }
 }

@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import Hello from '@/components/Hello'
+import Profile from '@/page/Profile'
 import Blogs from '@/page/Blogs'
 import Blog from '@/page/Blog'
 import Works from '@/page/Works'
@@ -15,9 +15,9 @@ Vue.use(BootstrapVue)
 export default new Router({
   routes: [
     {
+      name: 'Profile',
       path: '/',
-      name: 'Hello',
-      component: Hello
+      component: Profile
     },
     {
       name: 'Blogs',

@@ -1,9 +1,9 @@
 <template>
-    <ul>
-        <li v-for="Blog in Blogs">
-            <router-link :to="{ name: 'Blog', params: { id: Blog.id }}">{{ Blog.name }}</router-link>
-        </li>
-    </ul>
+  <ul>
+    <li v-for="Blog in Blogs">
+      <router-link :to="{ name: 'Blog', params: { id: Blog.id }}">{{ Blog.name }}</router-link>
+    </li>
+  </ul>
 </template>
 <script>
 export default {
