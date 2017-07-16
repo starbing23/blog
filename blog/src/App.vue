@@ -12,6 +12,7 @@
         </b-nav>
       </b-collapse>
     </b-navbar>
+    <button v-on:click="test">test</button>
     <router-view></router-view>
   </div>
 </template>
@@ -25,6 +26,27 @@ export default {
   data () {
     return {
       navs: Navs.navs
+    }
+  },
+  methods: {
+    test: function() {
+      console.log('test');
+      // this.$resource('/api/products').get().then(function(response) {
+      //   response.json().then(function(result) {
+      //     console.log(result)
+      //   })
+      // })
+
+      var xhrCors = 'withCredentials' in new XMLHttpRequest();
+      console.log(xhrCors);
+      
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET','http://localhost:3000/api/products');
+      xhr.onload = function(e){
+          var data = JSON.parse(this.response);
+          console.log(data)
+      };
+      xhr.send();
     }
   }
 }

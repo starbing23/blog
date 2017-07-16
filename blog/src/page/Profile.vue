@@ -20,7 +20,7 @@
 <script>
 /* eslint-disable */
 
-import * as d3 from '../../node_modules/d3/d3.min.js'
+import * as d3 from '../../d3/d3.min.js'
 import ProfileData from './ProfileData.js'
 
 export default {
@@ -90,13 +90,13 @@ export default {
         var root = d3.hierarchy(json)
             .sum(function(d) { return d.size; })
             .sort(function(a, b) { return b.value - a.value; });
-        console.log(root)
+
         // For efficiency, filter nodes to keep only those large enough to see.
         var nodes = partition(root).descendants()
             .filter(function(d) {
                 return (d.x1 - d.x0 > 0.005); // 0.005 radians = 0.29 degrees
             });
-        console.log(vis)
+
         var path = vis.data([json]).selectAll("path")
             .data(nodes)
             .enter().append("svg:path")
@@ -113,7 +113,7 @@ export default {
         // Get total size of the tree = value of root node from partition.
         totalSize = path.datum().value;
         };
-        console.log(totalSize)
+
         // Fade all but the current sequence, and show it in the breadcrumb trail.
         function mouseover(d) {
 

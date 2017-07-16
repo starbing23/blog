@@ -3,6 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import VueResource from 'vue-resource'
+
+Vue.use(VueResource);
+
+Vue.http.options.credentials = true;
+Vue.http.options.crossOrigin = true;
 
 Vue.config.productionTip = false
 
