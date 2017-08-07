@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
+import VueQuillEditor from 'vue-quill-editor'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Main from '@/page/index'
@@ -11,6 +12,7 @@ import Works from '@/page/Works'
 import Contact from '@/page/Contact'
 
 Vue.use(Router)
+Vue.use(VueQuillEditor)
 Vue.use(BootstrapVue)
 
 export default new Router({
