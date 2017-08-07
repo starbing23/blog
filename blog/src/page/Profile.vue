@@ -1,18 +1,54 @@
 <template>
-    <div>
-        Here is Profile
-        <div id="main">
-            <div id="sequence"></div>
-            <div id="chart">
-                <div id="explanation" style="visibility: hidden;">
-                <span id="percentage"></span><br/>
-                of visits begin with this sequence of pages
+    <div class="profile">
+        <div class="profile-content">
+            <div>
+                <img src="../img/profile-header.png" alt="profile-header" height="200px">
+            </div>
+            <div class="head">
+                <img src="../img/head.jpg" alt="head" height="128px">
+            </div>
+            <div class="profile-basic profile-basic-margin">
+                <h3>{{name}}</h3>
+                <h5>{{position}} in {{company}}</h5>
+                <div class="profile-basic-3">
+                    <icon name="mobile" scale="1.5"></icon><span>&nbsp {{phone}}</span>
+                    <icon name="envelope-o" scale="1.3"></icon><span>&nbsp {{email}}</span>
+                    <icon name="map-marker" scale="1.4"></icon><span>&nbsp {{address}}</span>
+                </div>
+                <div class="profile-block">
+                    <p class="summary">{{summary}}</p>
                 </div>
             </div>
         </div>
-        <div id="sidebar">
-            <input type="checkbox" id="togglelegend"> Legend<br/>
-            <div id="legend" style="visibility: hidden;"></div>
+        <div class="profile-content">
+            <div class="profile-basic">
+                <h4 class="text-left">Skills</h4>
+            </div>
+            <div class="profile-skill-thumb">
+                <div id="sequence"></div>
+                <div id="chart">
+                    <div id="explanation" style="visibility: hidden;">
+                        <span id="level"></span><br/>
+                        <span id="percentage"></span><br/>
+                        <span id="explanationText"></span>
+                    </div>
+                </div>
+                <div id="sidebar">
+                    <input type="checkbox" id="togglelegend"> Legend<br/>
+                    <div id="legend" style="visibility: hidden;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="profile-content">
+            <div class="profile-basic text-left">
+                <h4>Experiences</h4><br>
+                <div v-for="ex of experiences">
+                    <h5>{{ex.company}}</h5>
+                    <span>{{ex.date}}</span>
+                    <p>{{ex.position}}</p>
+                    <p>{{ex.responsibility}}</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -27,8 +63,15 @@ export default {
   name: 'vue-line-chart',
   data () {
     return {
-      data: [99, 71, 78, 25, 36, 92],
-      line: ''
+        name:'Bin Wu',
+        position:'Front-end Developer',
+        company: 'Axxess',
+        phone: '(814)-232-0159',
+        email: 'starbing23@gmail.com',
+        address: 'Dallas, TX',
+        summary: `“Bin is a very talented and dedicated young man with high learning skills and
+enormous potentials” - The Vice President of Blackboard`,
+        experiences: ProfileData.experiences,
     }
   },
   mounted () {
@@ -37,8 +80,8 @@ export default {
   methods: {
     calculatePath () {
       // Dimensions of sunburst.
-      var width = 750
-      var height = 600
+      var width = 350
+      var height = 350
       var radius = Math.min(width, height) / 2
 
       // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
@@ -51,14 +94,18 @@ export default {
 
         // Total size of all segments; we set this later, after loading the data.
         var totalSize = 0; 
-
-        var vis = d3.select("#chart").append("svg:svg")
+        var svg = d3.select("#chart").append("svg:svg")
             .attr("width", width)
-            .attr("height", height)
-            .append("svg:g")
+            .attr("height", height);
+        
+        var vis = svg.append("svg:g")
             .attr("id", "container")
             .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
+        
+        var shadow = svg.append("svg:g")
+            .attr("id", "shadow")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+        
         var partition = d3.partition()
             .size([2 * Math.PI, radius * radius]);
 
@@ -71,14 +118,41 @@ export default {
         var csv = ProfileData.Ex;
         var json = buildHierarchy(csv);
         createVisualization(json);
-        // });
+        removeShadow(shadow);
+
+        function removeShadow(shadow) {
+            var tau = 2 * Math.PI;
+            var arc = d3.arc()
+                .innerRadius(0)
+                .outerRadius(240)
+                .startAngle(tau);
+            
+            var g = shadow;
+            var foreground = g.append("path")
+                .datum({endAngle: 0})
+                .style("fill", "white")
+                .attr("d", arc);
+
+            foreground.transition()
+                .duration(1000)
+                .attrTween("d", arcTween(tau));
+            function arcTween(newAngle) {
+                return function(d) {
+                    var interpolate = d3.interpolate(d.endAngle, newAngle);
+                    return function(t) {
+                    d.endAngle = interpolate(t);
+                    return arc(d);
+                    }
+                }
+            }
+        };
 
         // Main function to draw and set up the visualization, once we have the data.
         function createVisualization(json) {
         // Basic setup of page elements.
-        initializeBreadcrumbTrail();
-        drawLegend();
-        d3.select("#togglelegend").on("click", toggleLegend);
+        //initializeBreadcrumbTrail();
+        //drawLegend();
+        //d3.select("#togglelegend").on("click", toggleLegend);
 
         // Bounding circle underneath the sunburst, to make it easier to detect
         // when the mouse leaves the parent g.
@@ -116,29 +190,38 @@ export default {
 
         // Fade all but the current sequence, and show it in the breadcrumb trail.
         function mouseover(d) {
-
-        var percentage = (100 * d.value / totalSize).toPrecision(3);
-        var percentageString = percentage + "%";
-        if (percentage < 0.1) {
-            percentageString = "< 0.1%";
-        }
-
+        var percentageString = d.value + " points";
+        var explanationText = d.data.name;
+        var level = "Total";
+        if(!d.children) {
+            if(d.value <= 3) {
+                level = "Familiar";
+            }else if(d.value <=6) {
+                level = "Good";
+            }else {
+                level = "Expert";
+            }
+        };
+        d3.select("#level")
+            .text(level);
+        d3.select("#explanationText")
+            .text(explanationText);
         d3.select("#percentage")
             .text(percentageString);
-
         d3.select("#explanation")
             .style("visibility", "");
 
         var sequenceArray = d.ancestors().reverse();
         sequenceArray.shift(); // remove root node from the array
+
         updateBreadcrumbs(sequenceArray, percentageString);
 
         // Fade all the segments.
-        d3.selectAll("path")
+        d3.selectAll("#chart path")
             .style("opacity", 0.3);
 
         // Then highlight only those that are an ancestor of the current segment.
-        vis.selectAll("path")
+        vis.selectAll("#chart path")
             .filter(function(node) {
                         return (sequenceArray.indexOf(node) >= 0);
                     })
@@ -147,10 +230,10 @@ export default {
 
         // Restore everything to full opacity when moving off the visualization.
         function mouseleave(d) {
-
+        console.log(d)
         // Hide the breadcrumb trail
-        d3.select("#trail")
-            .style("visibility", "hidden");
+        // d3.select("#trail")
+        //     .style("visibility", "hidden");
 
         // Deactivate all segments during transition.
         d3.selectAll("path").on("mouseover", null);
@@ -158,7 +241,7 @@ export default {
         // Transition each segment to full opacity and then reactivate it.
         d3.selectAll("path")
             .transition()
-            .duration(1000)
+            //.duration(500)
             .style("opacity", 1)
             .on("end", function() {
                     d3.select(this).on("mouseover", mouseover);
@@ -204,7 +287,7 @@ export default {
 
         // Remove exiting nodes.
         trail.exit().remove();
-
+        //console.log(trail);
         // Add breadcrumb and label for entering nodes.
         var entering = trail.enter().append("svg:g");
 
@@ -327,51 +410,115 @@ export default {
   }
 }
 </script>
-<style>
-#main {
-  float: left;
-  width: 750px;
-}
+<style lang="scss">
+.profile {
+    width:100%;
+    min-height: calc(100% - 72px);
+    background: #f5f5f5;
+    overflow: auto;
 
-#sidebar {
-  float: right;
-  width: 100px;
-}
+    .profile-content {
+        width:800px;
+        background: white;
+        overflow: hidden;
+        margin: 30px auto;
+        box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 2px 3px rgba(0,0,0,.2);
 
-#sequence {
-  width: 600px;
-  height: 70px;
+        .head {
+            width:128px;
+            height: 128px;
+            background-clip: content-box;
+            background-color: rgba(243,246,248,.94);
+            border: 4px solid #fff;
+            box-shadow: inset 0 1.5px 3px 0 rgba(0,0,0,.15), 0 1.5px 3px 0 rgba(0,0,0,.15);
+            box-sizing: content-box;
+            margin: auto;
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            top:-64px;
+        }
+
+        .profile-basic-margin {
+            margin-top: -80px;
+        }
+
+        .profile-basic {
+            margin-bottom: 30px;
+            padding: 30px 30px 0 20px;
+
+            svg {
+                vertical-align: top;
+            }
+
+            span {
+                vertical-align: top;
+                padding-right: 15px;
+            }
+        }
+
+        .profile-skill-thumb {
+
+            #sequence {
+                display: none;
+
+                text {
+                    font-weight: 600;
+                    fill: #fff;
+                }
+            }
+
+            #sidebar {
+                display: none;
+            }
+
+            #chart {
+                position: relative;
+
+                path {
+                    stroke: #fff;
+                }
+
+                svg {
+                    position: relative;
+                    z-index: 99;
+                }
+
+                #explanation {
+                    position: absolute;
+                    top: calc(50% - 55px);
+                    left: calc(50% - 70px);
+                    width: 140px;
+                    text-align: center;
+                    color: #666;
+                }
+            }
+        }
+
+        .profile-block {
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 1px solid #cdcfd2;
+
+            .summary {
+                color: rgba(0,0,0,.55);
+            }
+        }
+    }
 }
 
 #legend {
   padding: 10px 0 0 3px;
 }
 
-#sequence text, #legend text {
-  font-weight: 600;
-  fill: #fff;
-}
-
-#chart {
-  position: relative;
-}
-
-#chart path {
-  stroke: #fff;
-}
-
-#explanation {
-  position: absolute;
-  top: 260px;
-  left: 305px;
-  width: 140px;
-  text-align: center;
-  color: #666;
-  z-index: -1;
-}
-
 #percentage {
-  font-size: 2.5em;
+  font-size: 2em;
+}
+
+#test {
+    width:400px;
+    height:400px;
+    float:left;
 }
 </style>
 

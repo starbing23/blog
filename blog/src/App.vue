@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <b-navbar toggleable type="inverse" variant="success">
+    <div class="bg"></div>
+    <b-navbar toggleable type="inverse" variant="">
       <b-link to="/" class="navbar-brand">
           <span>Bin</span>
       </b-link>
@@ -12,7 +13,6 @@
         </b-nav>
       </b-collapse>
     </b-navbar>
-    <button v-on:click="test">test</button>
     <router-view></router-view>
   </div>
 </template>
@@ -53,11 +53,24 @@ export default {
 </script>
 
 <style>
+html, body, #app {
+  height: 100%;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.bg {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100vh;
+  background-image: url('./img/profile-background.jpg');
+  background-position: center;
 }
 </style>
