@@ -31,11 +31,6 @@ export default {
   methods: {
     test: function() {
       console.log('test');
-      // this.$resource('/api/products').get().then(function(response) {
-      //   response.json().then(function(result) {
-      //     console.log(result)
-      //   })
-      // })
 
       var xhrCors = 'withCredentials' in new XMLHttpRequest();
       console.log(xhrCors);

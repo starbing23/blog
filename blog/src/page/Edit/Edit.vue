@@ -2,7 +2,7 @@
   <div class="edit">
     <div class="edit-container">
       <input class="edit-title" type="text" placeholder="Title">
-      <div class="quill-editor-example">
+      <div class="quill-editor">
         <!-- quill-editor -->
         <quill-editor ref="myTextEditor"
                       v-model="content"
@@ -11,11 +11,15 @@
                       @focus="onEditorFocus($event)"
                       @ready="onEditorReady($event)">
         </quill-editor>
-        <quill-editor ref="myTextEditor"
+        <!-- <quill-editor ref="myTextEditor"
                       v-model="content"
                       :options="readerOption">
-        </quill-editor>
-        <div class="html ql-editor" v-html="content"></div>
+        </quill-editor> -->
+        <!-- <div class="html ql-editor" v-html="content"></div> -->
+        <div class="float-right">
+          <button class="btn btn-primary" @click="onEditorPost()">POST</button>
+          <button class="btn" @click="onEditorCancel()">Cancel</button>
+        </div>
       </div>
     </div>
   </div>
@@ -41,11 +45,12 @@ export default {
           }
         }
       },
-      readerOption: {
-        modules: {
-          toolbar:false,
-        }
-      }
+      // readerOption: {
+      //   modules: {
+      //     toolbar:false
+      //   },
+      //   readOnly: true,
+      // }
     }
   },
   methods: {
@@ -58,6 +63,14 @@ export default {
     onEditorReady(editor) {
       console.log('editor ready!', this.content)
     },
+    onEditorPost() {
+      this.$http.post('/api/postBlog').then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
   },
   computed: {
     editor() {
@@ -91,6 +104,10 @@ export default {
         border-radius: 3px;
         padding: 10px;
         font-size: 30px;
+      }
+
+      .quill-editor {
+        margin-bottom: 20px;
       }
     }
 
