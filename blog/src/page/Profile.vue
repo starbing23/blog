@@ -42,11 +42,25 @@
         <div class="profile-content">
             <div class="profile-basic text-left">
                 <h4>Experiences</h4><br>
-                <div v-for="ex of experiences">
-                    <h5>{{ex.company}}</h5>
+                <div v-for="ex of experiences" class="profile-experiences">
+                    <h6><strong>{{ex.company}}</strong></h6>
                     <span>{{ex.date}}</span>
-                    <p>{{ex.position}}</p>
-                    <p>{{ex.responsibility}}</p>
+                    <span>{{ex.position}}</span>
+                    <ul>
+                        <li v-for="responsibility of ex.responsibility">
+                            {{responsibility}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="profile-content">
+            <div class="profile-basic text-left">
+                <h4>Education</h4><br>
+                <div v-for="education of education">
+                    <span>{{education.date}}</span>
+                    <span>{{education.university}}</span>
+                    <span class="float-right">{{education.degree}}</span>
                 </div>
             </div>
         </div>
@@ -69,9 +83,9 @@ export default {
         phone: '(814)-232-0159',
         email: 'starbing23@gmail.com',
         address: 'Dallas, TX',
-        summary: `“Bin is a very talented and dedicated young man with high learning skills and
-enormous potentials” - The Vice President of Blackboard`,
+        summary: `“Bin is a very talented and dedicated young man with high learning skills and enormous potentials” - The Vice President of Blackboard`,
         experiences: ProfileData.experiences,
+        education: ProfileData.education,
     }
   },
   mounted () {
@@ -446,6 +460,9 @@ enormous potentials” - The Vice President of Blackboard`,
         .profile-basic {
             margin-bottom: 30px;
             padding: 30px 30px 0 20px;
+            color:rgba(0,0,0,.7);
+            font-size: 15px;
+            margin-bottom: 20px;
 
             svg {
                 vertical-align: top;
@@ -454,6 +471,10 @@ enormous potentials” - The Vice President of Blackboard`,
             span {
                 vertical-align: top;
                 padding-right: 15px;
+            }
+
+            .float-right {
+                float:right;
             }
         }
 

@@ -63,12 +63,25 @@ export default {
 
   experiences: [
     {'company': 'Axxess', 'date': 'Nov 2016 - Present', 'position': 'Front-end Developer'},
-    {'company': 'Mobotap', 'date': 'Oct 2015 - Feb 2016', 'position': 'Software Intern', 
-    'responsibility': `Cited as “a very talented and dedicated young man with high learning skills and
-enormous potentials” by the Vice President of Blackboard.
- Independently designed, developed and tested a prototype of cross platform app with
-Appcelerator Titanium (I reported to VP directly in this project).
- Developed a web app with HTML/CSS, JavaScript and JQuery.
- Developed web service with PHP and MySQL.`}
+    {'company': 'Blackboard Inc., K12 China Division', 'date': 'Oct 2015 - Feb 2016', 'position': 'Software Intern', 
+    'responsibility': ['Cited as “a very talented and dedicated young man with high learning skills and enormous potentials” by the Vice President of Blackboard.',
+      'Independently designed, developed and tested a prototype of cross platform app with Appcelerator Titanium (I reported to VP directly in this project).',
+      'Developed a web app with HTML/CSS, JavaScript and JQuery.',
+      'Developed web service with PHP and MySQL.']
+    },
+    {'company': 'Baina Information Technology Co. Ltd', 'date': 'Sep 2011 - May 2014', 'position': 'Senior HR & Admin Manager', 
+    'responsibility': ['Optimized internal HR system in 2013 and reduced 50% Separation Rate over 2012.',
+      'Led a 10-member team to handle all HR matters with 400 employees.',]
+    },
+    {'company': 'Careerfocus Inc.', 'date': 'Mar 2010 - Aug 2011', 'position': 'Headhunter', 
+    'responsibility': ['Hired top talents for international IT R&D centers, such as Microsoft, Yahoo, and Baidu etc.',
+      'Performance was ranked the No. 1 in 2011 in the Beijing division.',]
+    }
+  ],
+
+  education: [
+    {'university': 'Penn State University', 'date': '2014 - 2016', 'degree': 'Attended Courses in Computer Science'},
+    {'university': 'Conservatoire National Des Arts Et Métiers', 'date': '2008 - 2010', 'degree': 'Master in Project Management'},
+    {'university': 'Peking University', 'date': '2004 - 2008', 'degree': 'Bachelor in Chemistry'},
   ]
 }
