@@ -10,6 +10,7 @@ import Blogs from '@/page/Blogs'
 import Blog from '@/page/Blog'
 import Works from '@/page/Works'
 import Contact from '@/page/Contact'
+import Edit from '@/page/Edit/Edit'
 
 Vue.use(Router)
 Vue.use(VueQuillEditor)
@@ -48,6 +49,11 @@ export default new Router({
       name: 'Contact',
       path: '/Contact',
       component: Contact
+    },
+    {
+      name: 'Edit',
+      path: '/Edit',
+      component: Edit
     }
   ]
 })
