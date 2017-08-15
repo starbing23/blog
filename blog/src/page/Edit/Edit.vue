@@ -4,19 +4,18 @@
       <input class="edit-title" type="text" placeholder="Title">
       <div class="quill-editor">
         <!-- quill-editor -->
-        <quill-editor ref="myTextEditor"
+        <quill-editor v-if="isAdmin === false" ref="myTextEditor"
+                      v-model="content"
+                      :options="readerOption">
+        </quill-editor>
+        <quill-editor v-else ref="myTextEditor"
                       v-model="content"
                       :options="editorOption"
                       @blur="onEditorBlur($event)"
                       @focus="onEditorFocus($event)"
                       @ready="onEditorReady($event)">
         </quill-editor>
-        <!-- <quill-editor ref="myTextEditor"
-                      v-model="content"
-                      :options="readerOption">
-        </quill-editor> -->
-        <!-- <div class="html ql-editor" v-html="content"></div> -->
-        <div class="float-right">
+        <div v-if="isAdmin" class="float-right">
           <button class="btn btn-primary" @click="onEditorPost()">POST</button>
           <button class="btn" @click="onEditorCancel()">Cancel</button>
         </div>
@@ -28,6 +27,7 @@
 import Quill from 'quill'
 import { ImageImport } from './ImageImport.js'
 import { ImageResize } from './ImageResize.js'
+import Blog from '../../model/blog.js'
 
 Quill.register('modules/imageImport', ImageImport)
 Quill.register('modules/imageResize', ImageResize)
@@ -36,7 +36,8 @@ export default {
   name: 'Edit',
   data () {
     return {
-      content: '\<button onClick="console.log(`aaa`)"\>test\<\/button\>',
+      content: '',
+      readOnly: false,
       editorOption: {
         modules: {
           imageImport: true,
@@ -45,24 +46,33 @@ export default {
           }
         }
       },
-      // readerOption: {
-      //   modules: {
-      //     toolbar:false
-      //   },
-      //   readOnly: true,
-      // }
+      readerOption: {
+        modules: {
+          toolbar:false
+        },
+        readOnly: true,
+      }
+    }
+  },
+  props: {
+    isAdmin: {
+      default: false
     }
   },
   methods: {
+
     onEditorBlur(editor) {
       console.log('editor blur!', this.content)
     },
+
     onEditorFocus(editor) {
       console.log('editor focus!', this.content)
     },
+
     onEditorReady(editor) {
       console.log('editor ready!', this.content)
     },
+
     onEditorPost() {
       this.$http.post('/api/postBlog').then((response) => {
         console.log(response);
@@ -70,7 +80,7 @@ export default {
       .catch((error) => {
         console.log(error)
       })
-    }
+    },
   },
   computed: {
     editor() {
@@ -78,7 +88,14 @@ export default {
     }
   },
   mounted() {
-    //console.log('this is my editor', this.editor)
+    const art = this.$route.query.art;
+    if(art) {
+      this.$http.get('/api/Blog/'+art).then((response) => {
+        console.log(response);
+      }).catch((error) => {
+        console.log(error);
+      })
+    }
   }
 }
 </script>

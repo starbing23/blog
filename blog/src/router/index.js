@@ -10,6 +10,7 @@ import Blogs from '@/page/Blogs'
 import Blog from '@/page/Blog'
 import Works from '@/page/Works'
 import Contact from '@/page/Contact'
+import Login from '@/page/Login/Login'
 import Edit from '@/page/Edit/Edit'
 
 Vue.use(Router)
@@ -53,7 +54,22 @@ export default new Router({
     {
       name: 'Edit',
       path: '/Edit',
-      component: Edit
-    }
+      component: Edit,
+      props: {
+        isAdmin: isAdmin()
+      }   
+    },
+    {
+      name: 'Login',
+      path: '/Login',
+      component: Login
+    },
   ]
 })
+
+function isAdmin() {
+  if(localStorage && localStorage.session) {
+    return true;
+  }
+  return false;
+}

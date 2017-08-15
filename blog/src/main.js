@@ -20,6 +20,14 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
+  data: {
+    isAdmin: true,
+  },
+  computed: {
+    // isAdmin: () => {
+    //   return true;
+    // }
+  },
   components: { 
     App
   }

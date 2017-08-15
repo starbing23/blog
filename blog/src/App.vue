@@ -25,24 +25,24 @@ export default {
   name: 'app',
   data () {
     return {
-      navs: Navs.navs
+      navs: Navs.navs,
     }
   },
   methods: {
-    test: function() {
-      console.log('test');
+    // test: function() {
+    //   console.log('test');
 
-      var xhrCors = 'withCredentials' in new XMLHttpRequest();
-      console.log(xhrCors);
+    //   var xhrCors = 'withCredentials' in new XMLHttpRequest();
+    //   console.log(xhrCors);
       
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET','http://localhost:3000/api/products');
-      xhr.onload = function(e){
-          var data = JSON.parse(this.response);
-          console.log(data)
-      };
-      xhr.send();
-    }
+    //   var xhr = new XMLHttpRequest();
+    //   xhr.open('GET','http://localhost:3000/api/products');
+    //   xhr.onload = function(e){
+    //       var data = JSON.parse(this.response);
+    //       console.log(data)
+    //   };
+    //   xhr.send();
+    // }
   },
   mounted() {
     //this.test();
