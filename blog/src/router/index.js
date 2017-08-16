@@ -12,6 +12,7 @@ import Works from '@/page/Works'
 import Contact from '@/page/Contact'
 import Login from '@/page/Login/Login'
 import Edit from '@/page/Edit/Edit'
+import ErrorPage from '@/page/Error/Error'
 
 Vue.use(Router)
 Vue.use(VueQuillEditor)
@@ -56,13 +57,19 @@ export default new Router({
       path: '/Edit',
       component: Edit,
       props: {
-        isAdmin: isAdmin()
+        isAdmin: isAdmin(),
+        route: this
       }   
     },
     {
       name: 'Login',
       path: '/Login',
       component: Login
+    },
+    {
+      name: '404',
+      path: '/404',
+      component: ErrorPage
     },
   ]
 })

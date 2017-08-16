@@ -1,10 +1,10 @@
 <template>
   <div class="blogs">
     <div class="blogs-container">
-      <h3><strong>Newest Blogs</strong></h3>
+      <h3 class="blog-new"><strong>Newest Blogs</strong></h3>
+      <router-link :to="{ name: 'Edit'}"><button class="creat-button btn btn-primary float-right">Create</button></router-link>
       <div class="blog" v-for="Blog in Blogs">
-        <router-link :to="{ name: 'Blog', params: { id: Blog.id }}">
-          <img src="../img/head.jpg" width="250px">
+          <router-link :to="{ name: 'Edit', query: {id: Blog.id}}"><img src="../img/head.jpg" width="250px" class="blog-image"></router-link>
           <!-- <a class="blog-pic" href="javascript:void(0)" v-bind:style="{background: 'url(' + Blog.pic + ')'}"></a> -->
           <div class="blog-content">
             <h3 class="blog-title">{{Blog.title}}</h3>
@@ -12,7 +12,6 @@
               {{Blog.body}}
             </div>
           </div>
-        </router-link>
       </div>
     </div>
   </div>
@@ -70,6 +69,14 @@ a {
       margin: auto;
       padding: 30px 0;
       text-align: left;
+    
+      .blog-new {
+        display: inline-block;
+      }
+
+      .creat-button {
+        margin-top: -5px;
+      }
 
       .blog {
         width:100%;
@@ -77,6 +84,12 @@ a {
         padding: 20px 0;
         border-top: 1px solid #87a6bc;
         border-bottom: 1px solid #87a6bc;
+
+          .blog-image {
+            object-fit: cover;
+            width: 250px;
+            height: 150px;
+          }
 
           .blog-pic {
             background-size: cover; 

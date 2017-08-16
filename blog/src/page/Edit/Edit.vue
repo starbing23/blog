@@ -57,7 +57,8 @@ export default {
   props: {
     isAdmin: {
       default: false
-    }
+    },
+    route: {}
   },
   methods: {
 
@@ -88,13 +89,16 @@ export default {
     }
   },
   mounted() {
-    const art = this.$route.query.art;
+    const art = this.$route.query.id;
     if(art) {
       this.$http.get('/api/Blog/'+art).then((response) => {
         console.log(response);
       }).catch((error) => {
         console.log(error);
+
       })
+    }else if(!this.isAdmin) {
+      this.route.a.push({ name: '404'});
     }
   }
 }
