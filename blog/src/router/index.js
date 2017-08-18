@@ -57,8 +57,7 @@ export default new Router({
       path: '/Edit',
       component: Edit,
       props: {
-        isAdmin: isAdmin(),
-        route: this
+        isAdmin: isAdmin()
       }   
     },
     {
@@ -70,6 +69,10 @@ export default new Router({
       name: '404',
       path: '/404',
       component: ErrorPage
+    },
+    {
+      path: '*',
+      redirect: {name: '404'}
     },
   ]
 })

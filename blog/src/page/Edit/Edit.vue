@@ -58,7 +58,6 @@ export default {
     isAdmin: {
       default: false
     },
-    route: {}
   },
   methods: {
 
@@ -94,11 +93,10 @@ export default {
       this.$http.get('/api/Blog/'+art).then((response) => {
         console.log(response);
       }).catch((error) => {
-        console.log(error);
-
+        this.$router.replace({ name: '404'});
       })
     }else if(!this.isAdmin) {
-      this.route.a.push({ name: '404'});
+      this.$router.replace({ name: '404'});
     }
   }
 }
