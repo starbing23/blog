@@ -78,6 +78,10 @@ export default new Router({
 })
 
 function isAdmin() {
+  if(window.location.href.slice(0, 17) === "http://localhost:") {
+    return true;
+  }
+  //todo
   if(localStorage && localStorage.session) {
     return true;
   }

@@ -21,7 +21,7 @@ new Vue({
   router,
   template: '<App/>',
   data: {
-    isAdmin: true,
+    // isAdmin: true,
   },
   computed: {
     // isAdmin: () => {
