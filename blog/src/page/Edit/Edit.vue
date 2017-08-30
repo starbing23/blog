@@ -99,9 +99,9 @@ export default {
       return this.$refs.myTextEditor.quill
     }
   },
-  mounted() {
+  async mounted() {
     const self = this;
-    const art = this.$route.query.id;
+    const id = this.$route.query.id;
     this.editor.on('text-change', async function(delta, oldDelta, source) {
       const operation = delta.ops[1] ? delta.ops[1] : delta.ops[0]; //At first operation, the ops only be 0
       if(operation.insert && operation.insert.image) {
@@ -115,15 +115,20 @@ export default {
         }
       }
     });
-    if(art) {
-      blogModel.getBlog(art);
-      this.$http.get('/api/Blog/'+art).then((response) => {
-        console.log(response);
-      }).catch((error) => {
-        this.$router.replace({ name: '404'});
-      })
+    if(id) {
+      const result = await blogModel.getBlog(id);
+      const response = result.body;
+      if(response.code === '200') {
+        const data = response.data;
+        const blog = data.blog;
+        this.title = blog.title;
+        this.content = blog.body;
+        this.isAdmin = data.editable;
+      }else {
+        this.$router.push({ name: '404'});
+      }
     }else if(!this.isAdmin) {
-      this.$router.replace({ name: '404'});
+      this.$router.push({ name: '404'});
     }
   }
 }

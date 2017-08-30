@@ -6,9 +6,11 @@ import Icon from 'vue-awesome/components/Icon'
 import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
+import VModal from 'vue-js-modal'
 
 Vue.component('icon', Icon)
 Vue.use(VueResource);
+Vue.use(VModal, {dialog: true})
 
 Vue.http.options.credentials = true;
 Vue.http.options.crossOrigin = true;

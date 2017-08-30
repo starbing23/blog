@@ -1,27 +1,20 @@
 import Vue from 'vue'
 
+const api = 'http://localhost:3001'
+
 export default {
     async getBlog(id) {
-        let result = await Vue.http.get('/api/blog/get?id='+id).catch(function(err) {
-            console.log(err);
-            return {};
-        });
+        const result = await Vue.http.get(api+'/api/blog/get?id='+id)
         return result;
     },
 
     async postImg(imageData) {
-        let result = await Vue.http.post('/api/blog/postImage', imageData).catch(function(err) {
-            console.log(err);
-            return {};
-        });
+        const result = await Vue.http.post(api+'/api/blog/postImage', imageData)
         return result;
     },
 
     async postBlog(content) {
-        let result = await Vue.http.post('/api/blog/post', content).catch(function(err) {
-            console.log(err);
-            return {};
-        });
+        const result = await Vue.http.post(api+'/api/blog/post', content)
         return result;
     },
 }

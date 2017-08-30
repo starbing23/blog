@@ -57,13 +57,8 @@ export default new Router({
       path: '/Edit',
       component: Edit,
       props: {
-        isAdmin: isAdmin()
+        isAdmin: false
       }   
-    },
-    {
-      name: 'Login',
-      path: '/Login',
-      component: Login
     },
     {
       name: '404',
