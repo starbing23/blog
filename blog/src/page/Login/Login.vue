@@ -17,7 +17,7 @@ export default {
     background: #f5f5f5;
     overflow: auto;
 
-    .edit-container {
+    .login-container {
       width: 65%;
       min-width: 640px;
       max-width: 960px;

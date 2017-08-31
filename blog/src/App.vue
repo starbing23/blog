@@ -18,12 +18,14 @@
     </b-navbar>
     <router-view></router-view>
     <v-dialog/>
+    <loginModal />
   </div>
 </template>
 
 <script>
 
 import Navs from './navs.js'
+import Modal from './components/modal/main.js'
 
 export default {
   name: 'app',
@@ -32,13 +34,10 @@ export default {
       navs: Navs.navs,
     }
   },
+  components: Modal,
   methods: {
     loginModal() {
-      console.log('aaa')
-      this.$modal.show('dialog', {
-        title: 'test',
-        text: 'text'
-      })
+      this.$modal.show('loginModal');
     }
   },
   mounted() {
