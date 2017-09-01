@@ -17,8 +17,8 @@
       </b-collapse>
     </b-navbar>
     <router-view></router-view>
-    <v-dialog/>
     <loginModal />
+    <v-dialog/>
   </div>
 </template>
 

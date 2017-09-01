@@ -16,7 +16,7 @@
             </p>
             <div class="text-left remeber"><small><input type="checkbox" v-model="remeber"> remeber</small></div>
             <p>
-                <button class="btn btn-primary">Login</button>
+                <button class="btn btn-primary" @click="LoginClick()">Login</button>
             </p>
         </div>
       </div>
@@ -24,6 +24,7 @@
 </template>
 <script>
 import VModal from 'vue-js-modal'
+import UserModel from '../../model/user.js'
 
 export default {
   name: 'loginModal',
@@ -34,7 +35,36 @@ export default {
         remeber: false,
     }
   },
-  
+  methods: {
+    async LoginClick() {
+        console.log('login btn click')
+        const result = await UserModel.login({
+            userName: this.userName,
+            password: this.password
+        })
+        if(result.status === 200) {
+            const success = result.body.success;
+            if(success) {
+                this.$modal.hide('loginModal');
+                this.$modal.show('dialog', {
+                    title: 'Login sucess!',
+                    text: result.body.message
+                })
+            }else {
+                this.failLogin()
+            }
+        }else {
+            this.failLogin()
+        }
+    },
+
+    failLogin() {
+        this.$modal.show('dialog', {
+            title: 'Login failed!',
+            text: 'Username or Password is incorrect!'
+        })
+    }
+  },
 }
 </script>
 <style lang="scss">

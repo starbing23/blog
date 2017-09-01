@@ -10,7 +10,6 @@ import Blogs from '@/page/Blogs'
 import Blog from '@/page/Blog'
 import Works from '@/page/Works'
 import Contact from '@/page/Contact'
-import Login from '@/page/Login/Login'
 import Edit from '@/page/Edit/Edit'
 import ErrorPage from '@/page/Error/Error'
 

@@ -86,7 +86,7 @@ export default {
       }
 
       console.log('Post blog = ', this.editor.editor.delta);
-      let result = blogModel.postBlog(this.editor.editor.delta);
+      let result = await blogModel.postBlog(this.editor.editor.delta);
     },
 
     async postImg(imageData) {
