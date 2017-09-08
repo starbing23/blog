@@ -131,6 +131,7 @@ export default {
       const operation = delta.ops[1] ? delta.ops[1] : delta.ops[0]; //At first operation, the ops only be 0
       if(operation.insert && operation.insert.image) {
         const imageData = operation.insert.image;
+        console.log('upload img = ', imageData);
         const result = await self.postImg(imageData);
         if(result && result.data) {
           const imageSource = result.data.imageSource;

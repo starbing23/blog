@@ -101,13 +101,13 @@ a {
             background-size: cover; 
             background-repeat: no-repeat; 
             background-position: center center;
+            margin-right: 20px;
           }
           
           .blog-content {
             display: inline-block;
             width: calc(100% - 290px);
             vertical-align: top;
-            margin-left: 20px;
 
             .blog-title {
               width:100%;
