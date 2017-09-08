@@ -33,11 +33,16 @@ export default {
         userName: '',
         password: '',
         remeber: false,
+        isAdmin: this.initIsAdmin,
     }
+  },
+  props: {
+      initIsAdmin: {
+          default: false
+      }
   },
   methods: {
     async LoginClick() {
-        console.log('login btn click')
         const result = await UserModel.login({
             userName: this.userName,
             password: this.password
@@ -49,7 +54,9 @@ export default {
                 this.$modal.show('dialog', {
                     title: 'Login sucess!',
                     text: result.body.message
-                })
+                });
+                this.isAdmin = true;
+                this.$emit('loginSuccess');
             }else {
                 this.failLogin()
             }

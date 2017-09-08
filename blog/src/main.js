@@ -4,8 +4,8 @@ import Vue from 'vue'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
 import App from './App'
-import router from './router'
 import VueResource from 'vue-resource'
+import router from './router'
 import VModal from 'vue-js-modal'
 
 Vue.component('icon', Icon)
@@ -23,12 +23,8 @@ new Vue({
   router,
   template: '<App/>',
   data: {
-    // isAdmin: true,
   },
   computed: {
-    // isAdmin: () => {
-    //   return true;
-    // }
   },
   components: { 
     App

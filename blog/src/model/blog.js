@@ -8,6 +8,16 @@ export default {
         return result;
     },
 
+    async getBlogs(page) {
+        const result = await Vue.http.get(api+'/api/blog/getAll?page='+page)
+        return result;
+    },
+
+    async getEdit() {
+        const result = await Vue.http.get(api+'/api/blog/edit')
+        return result;
+    },
+
     async postImg(imageData) {
         const result = await Vue.http.post(api+'/api/blog/postImage', imageData)
         return result;

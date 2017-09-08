@@ -84,9 +84,32 @@ export default {
         console.log('Edit title = ', this.title);
         console.log('Edit content = ', this.content);
       }
+      const delta = this.editor.editor.delta;
+      const description = this.description(this.editor.getText());
+      const data = {
+        title: this.title,
+        // body: JSON.stringify(delta),
+        body: JSON.stringify(this.content),
+        description: description,
+      };
+      let result = await blogModel.postBlog(data);
+      if(result.body && result.body.success) {
+        if(this.isAdmin) console.log('Post blog success = ', result);
+        const blogId = result.body.data.blogId;
+        this.$router.push({ name: 'Edit', query: {id: blogId}});
+      }else {
+        this.$modal.show('dialog', {
+            title: 'Post failed!',
+            text: 'Something wrong with post blog!'
+        });
+      }
+    },
 
-      console.log('Post blog = ', this.editor.editor.delta);
-      let result = await blogModel.postBlog(this.editor.editor.delta);
+    description(content) {
+      content = JSON.stringify(content);
+      if(content.length >= 150) content = content.substring(0, 150);
+      const description = content.split('\\n')[0];  //Get the first paragraph as description.
+      return description.slice(1);
     },
 
     async postImg(imageData) {
@@ -102,6 +125,8 @@ export default {
   async mounted() {
     const self = this;
     const id = this.$route.query.id;
+
+    //If there is image change
     this.editor.on('text-change', async function(delta, oldDelta, source) {
       const operation = delta.ops[1] ? delta.ops[1] : delta.ops[0]; //At first operation, the ops only be 0
       if(operation.insert && operation.insert.image) {
@@ -115,21 +140,23 @@ export default {
         }
       }
     });
+    //if it's edit an exsit blog
     if(id) {
       const result = await blogModel.getBlog(id);
       const response = result.body;
       if(response.code === '200') {
-        const data = response.data;
-        const blog = data.blog;
+        const blog = response.data.blog;
         this.title = blog.title;
-        this.content = blog.body;
-        this.isAdmin = data.editable;
+        this.content = JSON.parse(blog.body);
       }else {
         this.$router.push({ name: '404'});
       }
     }else if(!this.isAdmin) {
       this.$router.push({ name: '404'});
-    }
+    };
+
+    //auto save
+
   }
 }
 </script>

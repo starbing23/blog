@@ -11,13 +11,14 @@
             <router-link :to="nav.link" class="nav-link">{{nav.name}}</router-link>
           </b-nav-item>
           <b-nav-item>
-            <a href="#" class="nav-link" @click="loginModal">Login</a>
+            <a href="#" class="nav-link" v-if="!isAdmin" @click="loginModal">Login</a>
+            <a href="#" class="nav-link" v-else @click="logout">Logout</a>
           </b-nav-item>
         </b-nav>
       </b-collapse>
     </b-navbar>
-    <router-view></router-view>
-    <loginModal />
+    <router-view :isAdmin="isAdmin"></router-view>
+    <loginModal :initIsAdmin="isAdmin" v-on:loginSuccess="loginSuccess"/>
     <v-dialog/>
   </div>
 </template>
@@ -26,21 +27,42 @@
 
 import Navs from './navs.js'
 import Modal from './components/modal/main.js'
+import Session from './router/session.js'
+import userModel from './model/user.js'
 
 export default {
   name: 'app',
   data () {
     return {
       navs: Navs.navs,
+      isAdmin: true,
     }
   },
   components: Modal,
   methods: {
     loginModal() {
       this.$modal.show('loginModal');
-    }
+    },
+    async logout() {
+      const result = await userModel.logout();
+      if(result.status === 200) {
+        const success = result.body.success;
+        if(success) {
+          this.$modal.show('dialog', {
+              title: 'Logout sucess!',
+              text: 'Your logout success!'
+          });
+          this.isAdmin = false;
+        }
+      }
+      console.log(this.isAdmin)
+    },
+    loginSuccess() {
+      this.isAdmin = true;
+    },
   },
-  mounted() {
+  async mounted() {
+    this.isAdmin = await Session.isAdmin();
   }
 }
 </script>

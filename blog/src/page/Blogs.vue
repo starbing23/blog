@@ -2,14 +2,14 @@
   <div class="blogs">
     <div class="blogs-container">
       <h3 class="blog-new"><strong>Newest Blogs</strong></h3>
-      <router-link :to="{ name: 'Edit'}"><button class="creat-button btn btn-primary float-right">Create</button></router-link>
-      <div class="blog" v-for="Blog in Blogs">
-          <router-link :to="{ name: 'Edit', query: {id: Blog.id}}"><img src="../img/head.jpg" width="250px" class="blog-image"></router-link>
+      <router-link :to="{ name: 'Edit'}" v-if="isAdmin"><button class="creat-button btn btn-primary float-right">Create</button></router-link>
+      <div class="blog" v-for="blog in blogs">
+          <!-- <router-link :to="{ name: 'Edit', query: {id: Blog.id}}"><img src="../img/head.jpg" width="250px" class="blog-image"></router-link> -->
           <!-- <a class="blog-pic" href="javascript:void(0)" v-bind:style="{background: 'url(' + Blog.pic + ')'}"></a> -->
           <div class="blog-content">
-            <h3 class="blog-title">{{Blog.title}}</h3>
+            <h3 class="blog-title">{{blog.title}}</h3>
             <div class="blog-body">
-              {{Blog.body}}
+              {{blog.description}}
             </div>
           </div>
       </div>
@@ -17,36 +17,42 @@
   </div>
 </template>
 <script>
+import Blog from '../model/blog.js'
+
 export default {
   name: 'Blogs',
   data () {
     return {
-      Blogs: [
-        {
-          name: 'Blog1',
-          pic: '../img/profile-header.png',
-          title: 'I am blog 1 sadfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
-          body: 'I am body asd fdff fffff ffffff fffff fff ffff fffffff ffffffff fffffff ffffff ffff ffffff fffffffffffffffffffffffffffffff ffffffffff ffff ffffaaaa aaaaaaI am body asdfdffff ffff fffff ffffff ffffffff ffffffff ffffffff ffff fffffff fffffffff fffff ffff fffffffffffffffffffffffffffffffffffffffffaaaaaaaaaaI am body asdfdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffaaaaaaaaaaI am body asdfdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffaaaaaaaaaa',
-          id: '00',
-
-        },
-        {
-          name: 'Blog2',
-          pic: '../img/head.jpg',
-          title: 'I am blog 2',
-          body: 'I am body',
-          id: '01'
-        }
-      ],
-      content: '<h2>I am Example 1</h2>',
+      blogs: [],
+      page: 0,
       editorOption: {},
     }
   },
+  props: {
+    isAdmin: {
+      default: false
+    }
+  },
   methods: {
+    async getBlogs() {
+      const result = await Blog.getBlogs(this.page);
+      if(result.body && result.body.success) {
+        const resultBlogs = result.body.data.blogs;
+        if(this.isAdmin) console.log('Get blogs success = ', resultBlogs);
+        this.blogs = resultBlogs;
+        console.log(this.blogs)
+      }else {
+        this.$modal.show('dialog', {
+            title: 'Get blogs failed!',
+            text: result.body.message
+        });
+      }
+    }
   },
   computed: {
   },
   mounted() {
+    this.getBlogs();
   }
 }
 </script>
