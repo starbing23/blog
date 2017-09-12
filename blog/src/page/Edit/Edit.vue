@@ -1,7 +1,8 @@
 <template>
   <div class="edit">
     <div class="edit-container">
-      <input class="edit-title" type="text" placeholder="Title" v-model="title">
+      <input v-if="isAdmin" class="edit-title" type="text" placeholder="Title" v-model="title">
+      <h3 v-else class="noEdit-title">{{title}}</h3>
       <div class="quill-editor">
         <!-- quill-editor -->
         <quill-editor v-if="isAdmin === false" ref="myTextEditor"
@@ -75,7 +76,6 @@ export default {
       const imgUrl = blogHeadImg ? blogHeadImg.insert.image : null;
       const data = {
         title: this.title,
-        // body: JSON.stringify(delta),
         body: JSON.stringify(this.content),
         description: description,
         headImg: imgUrl,
@@ -113,7 +113,6 @@ export default {
       const description = content.slice(1).split('\\n').find((element)=> {
         return element !== ''
       });
-      console.log('ttt', description)
       return description;
     },
 
@@ -133,7 +132,6 @@ export default {
       let formData = new FormData();
       let file = $('#' + this.imageInputId)[0].files[0];
       formData.append('files', file);
-      console.log('ssfsdfsdfds', formData)
       const result = await blogModel.postImg(formData);
       const response = result.body;
       if(response.success) {
@@ -162,7 +160,7 @@ export default {
     const id = this.$route.query.id;
 
     //Customer image upload
-    this.editor.getModule('toolbar').addHandler('image', this.imageHandler);
+    if(this.isAdmin) this.editor.getModule('toolbar').addHandler('image', this.imageHandler);
 
     //if it's edit an exsit blog
     if(id) {
@@ -206,6 +204,14 @@ export default {
         border-radius: 3px;
         padding: 10px;
         font-size: 30px;
+      }
+
+      .noEdit-title {
+        width: 100%;
+        background-color: #f5f5f5;
+        height: 50px;
+        margin: 20px 0;
+        padding: 10px;
       }
 
       .quill-editor {
