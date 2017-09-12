@@ -4,14 +4,15 @@
       <h3 class="blog-new"><strong>Newest Blogs</strong></h3>
       <router-link :to="{ name: 'Edit'}" v-if="isAdmin"><button class="creat-button btn btn-primary float-right">Create</button></router-link>
       <div class="blog" v-for="blog in blogs">
-          <!-- <router-link :to="{ name: 'Edit', query: {id: Blog.id}}"><img src="../img/head.jpg" width="250px" class="blog-image"></router-link> -->
-          <!-- <a class="blog-pic" href="javascript:void(0)" v-bind:style="{background: 'url(' + Blog.pic + ')'}"></a> -->
-          <div class="blog-content">
-            <h3 class="blog-title">{{blog.title}}</h3>
-            <div class="blog-body">
-              {{blog.description}}
-            </div>
-          </div>
+            <router-link :to="{ name: 'Edit', query: {id: blog.blogId}}">
+              <img v-if="blog.headImg" :src="blog.headImg" width="250px" class="blog-image"> 
+              <div class="blog-content">
+                <h3 class="blog-title">{{blog.title}}</h3>
+                <div class="blog-body">
+                  {{blog.description}}
+                </div>
+              </div>
+            </router-link>
       </div>
     </div>
   </div>

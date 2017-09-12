@@ -18,7 +18,7 @@
       </b-collapse>
     </b-navbar>
     <router-view :isAdmin="isAdmin"></router-view>
-    <loginModal :initIsAdmin="isAdmin" v-on:loginSuccess="loginSuccess"/>
+    <login-modal :initIsAdmin="isAdmin" v-on:loginSuccess="loginSuccess"/>
     <v-dialog/>
   </div>
 </template>

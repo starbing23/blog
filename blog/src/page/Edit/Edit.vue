@@ -10,12 +10,11 @@
         </quill-editor>
         <quill-editor v-else ref="myTextEditor"
                       v-model="content"
-                      :options="editorOption"
-                      @blur="onEditorBlur($event)"
-                      @focus="onEditorFocus($event)"
-                      @ready="onEditorReady($event)"
-                      @change="onEditorChange($event)">
+                      :options="editorOption">
         </quill-editor>
+        <form action="" method="post" enctype="multipart/form-data" id="uploadFormMulti">
+          <input style="display: none" :id="imageInputId" type="file" name="avator" multiple accept="image/jpg,image/jpeg,image/png,image/gif" @change="uploadImg('uploadFormMulti')"><!--style="display: none"-->
+        </form>
         <div v-if="isAdmin" class="float-right">
           <button class="btn btn-primary" @click="onEditorPost()">POST</button>
           <button class="btn" @click="onEditorCancel()">Cancel</button>
@@ -53,7 +52,8 @@ export default {
           toolbar:false
         },
         readOnly: true,
-      }
+      },
+      imageInputId: 'imageInputId',
     }
   },
   props: {
@@ -62,23 +62,6 @@ export default {
     },
   },
   methods: {
-
-    onEditorBlur(editor) {
-      // console.log('editor blur!', editor)
-    },
-
-    onEditorFocus(editor) {
-      // console.log('editor focus!', editor)
-    },
-
-    onEditorReady(editor) {
-      // console.log('editor ready!', editor)
-    },
-
-    onEditorChange(editor) {
-      // console.log('editor change!', editor)
-    },
-
     async onEditorPost() {
       if(this.isAdmin) {
         console.log('Edit title = ', this.title);
@@ -86,21 +69,39 @@ export default {
       }
       const delta = this.editor.editor.delta;
       const description = this.description(this.editor.getText());
+      const blogHeadImg = delta.ops.find((element)=> {
+        return element.insert.image;
+      });
+      const imgUrl = blogHeadImg ? blogHeadImg.insert.image : null;
       const data = {
         title: this.title,
         // body: JSON.stringify(delta),
         body: JSON.stringify(this.content),
         description: description,
+        headImg: imgUrl,
       };
-      let result = await blogModel.postBlog(data);
+      let id = this.$route.query.id;
+      let result = {}
+
+      if(id) {
+        data.blogId = id;
+        result = await blogModel.updateBlog(data);
+      }else {
+        result = await blogModel.postBlog(data);
+      }
+
       if(result.body && result.body.success) {
         if(this.isAdmin) console.log('Post blog success = ', result);
-        const blogId = result.body.data.blogId;
-        this.$router.push({ name: 'Edit', query: {id: blogId}});
+        id = result.body.data.blogId ? result.body.data.blogId : id;
+        this.$modal.show('dialog', {
+            title: 'Post success!',
+            text: result.body.message
+        });
+        this.$router.push({ name: 'Edit', query: {id: id}});
       }else {
         this.$modal.show('dialog', {
             title: 'Post failed!',
-            text: 'Something wrong with post blog!'
+            text: result.body.message
         });
       }
     },
@@ -108,39 +109,61 @@ export default {
     description(content) {
       content = JSON.stringify(content);
       if(content.length >= 150) content = content.substring(0, 150);
-      const description = content.split('\\n')[0];  //Get the first paragraph as description.
-      return description.slice(1);
+      //Get the first paragraph not blank as description.
+      const description = content.slice(1).split('\\n').find((element)=> {
+        return element !== ''
+      });
+      console.log('ttt', description)
+      return description;
     },
 
     async postImg(imageData) {
       let result = await blogModel.postImg(imageData);
       return result;
     },
+
+    async imageHandler(image) {
+      if (image) {
+        const fileInput = $('#' + this.imageInputId);
+        fileInput.click()
+      }
+    },
+
+    async uploadImg(id) {
+      let formData = new FormData();
+      let file = $('#' + this.imageInputId)[0].files[0];
+      formData.append('files', file);
+      console.log('ssfsdfsdfds', formData)
+      const result = await blogModel.postImg(formData);
+      const response = result.body;
+      if(response.success) {
+        let imgUrl = response.data;
+        this.addImgRange = this.editor.getSelection();
+        imgUrl = imgUrl.indexOf('http') != -1 ? imgUrl : 'http:' + imgUrl;
+        this.editor.insertEmbed(this.addImgRange != null?this.addImgRange.index:0, 'image', imgUrl, Quill.sources.USER);
+      }else {
+        this.$modal.show('dialog', {
+            title: 'Upload image failed!',
+            text: 'Please try again!'
+        });
+      }
+      const fileInput = $('#' + this.imageInputId);
+      fileInput[0].value = '';
+    }
   },
   computed: {
     editor() {
       return this.$refs.myTextEditor.quill
-    }
+    },
+
   },
   async mounted() {
     const self = this;
     const id = this.$route.query.id;
 
-    //If there is image change
-    this.editor.on('text-change', async function(delta, oldDelta, source) {
-      const operation = delta.ops[1] ? delta.ops[1] : delta.ops[0]; //At first operation, the ops only be 0
-      if(operation.insert && operation.insert.image) {
-        const imageData = operation.insert.image;
-        console.log('upload img = ', imageData);
-        const result = await self.postImg(imageData);
-        if(result && result.data) {
-          const imageSource = result.data.imageSource;
+    //Customer image upload
+    this.editor.getModule('toolbar').addHandler('image', this.imageHandler);
 
-        }else {
-          console.log('post Img fail')
-        }
-      }
-    });
     //if it's edit an exsit blog
     if(id) {
       const result = await blogModel.getBlog(id);

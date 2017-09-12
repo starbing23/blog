@@ -27,4 +27,9 @@ export default {
         const result = await Vue.http.post(api+'/api/blog/post', content)
         return result;
     },
+
+    async updateBlog(content) {
+        const result = await Vue.http.put(api+'/api/blog/update', content)
+        return result;
+    }
 }
