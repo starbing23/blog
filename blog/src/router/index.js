@@ -12,6 +12,7 @@ import Works from '@/page/Works'
 import Contact from '@/page/Contact'
 import Edit from '@/page/Edit/Edit'
 import ErrorPage from '@/page/Error/Error'
+import Session from './session.js'
 
 Vue.use(Router)
 Vue.use(VueQuillEditor)

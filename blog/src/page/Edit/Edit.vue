@@ -5,13 +5,13 @@
       <h3 v-else class="noEdit-title">{{title}}</h3>
       <div class="quill-editor">
         <!-- quill-editor -->
-        <quill-editor v-if="isAdmin === false" ref="myTextEditor"
-                      v-model="content"
-                      :options="readerOption">
-        </quill-editor>
-        <quill-editor v-else ref="myTextEditor"
+        <quill-editor v-show="isAdmin" ref="myTextEditor"
                       v-model="content"
                       :options="editorOption">
+        </quill-editor>
+        <quill-editor v-show="!isAdmin" ref="myTextEditor"
+                      v-model="content"
+                      :options="readerOption">
         </quill-editor>
         <form action="" method="post" enctype="multipart/form-data" id="uploadFormMulti">
           <input style="display: none" :id="imageInputId" type="file" name="avator" multiple accept="image/jpg,image/jpeg,image/png,image/gif" @change="uploadImg('uploadFormMulti')"><!--style="display: none"-->

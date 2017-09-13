@@ -35,7 +35,11 @@ export default {
   data () {
     return {
       navs: Navs.navs,
-      isAdmin: true,
+    }
+  },
+  props: {
+    isAdmin: {
+      default: false
     }
   },
   components: Modal,
@@ -52,18 +56,14 @@ export default {
               title: 'Logout sucess!',
               text: 'Your logout success!'
           });
-          this.isAdmin = false;
+          this.$emit('logoutSuccess');
         }
       }
-      console.log(this.isAdmin)
     },
     loginSuccess() {
-      this.isAdmin = true;
+      this.$emit('loginSuccess');
     },
   },
-  async mounted() {
-    this.isAdmin = await Session.isAdmin();
-  }
 }
 </script>
 
