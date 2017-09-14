@@ -96,14 +96,15 @@ a {
             object-fit: cover;
             width: 250px;
             height: 150px;
+            margin-right: 25px;
           }
 
-          .blog-pic {
-            background-size: cover; 
-            background-repeat: no-repeat; 
-            background-position: center center;
-            margin-right: 20px;
-          }
+          // .blog-pic {
+          //   background-size: cover; 
+          //   background-repeat: no-repeat; 
+          //   background-position: center center;
+          //   margin-right: 20px;
+          // }
           
           .blog-content {
             display: inline-block;
@@ -126,6 +127,7 @@ a {
               overflow: hidden;
               position:relative;
               color: #2e4453;
+              word-wrap: break-word;
             }
 
             .blog-body::after {
@@ -133,7 +135,7 @@ a {
               font-weight: bold;
               position: absolute;
               bottom: 0;
-              right: 32px;
+              right: 0;
               padding: 0 60px 1px 0px;
               height: 1.4em;
               background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(245, 245, 245, 1));

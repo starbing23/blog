@@ -9,7 +9,7 @@
                       v-model="content"
                       :options="editorOption">
         </quill-editor>
-        <quill-editor v-show="!isAdmin" ref="myTextEditor"
+        <quill-editor v-show="!isAdmin" ref="myTextReader"
                       v-model="content"
                       :options="readerOption">
         </quill-editor>
@@ -222,7 +222,11 @@ export default {
     .ql-container .ql-editor {
       min-height: 20em;
       padding-bottom: 1em;
-      max-height: 25em;
+    }
+
+    .ql-container.ql-snow {
+        border: 0;
+        border-top: 1px solid #ccc;
     }
 }
 </style>
