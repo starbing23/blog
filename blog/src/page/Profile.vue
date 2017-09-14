@@ -71,6 +71,7 @@
 /* eslint-disable */
 
 import * as d3 from '../../d3/d3.min.js'
+import Throttle from 'throttle-debounce/throttle'
 import ProfileData from './ProfileData.js'
 
 export default {
@@ -86,13 +87,16 @@ export default {
         summary: `“Bin is a very talented and dedicated young man with high learning skills and enormous potentials” - The Vice President of Blackboard`,
         experiences: ProfileData.experiences,
         education: ProfileData.education,
+        shadowContent: {}
     }
   },
   mounted () {
-    this.calculatePath()
+    let self = this;
+    this.calculatePath();
+    this.addScrollEvent();
   },
   methods: {
-    calculatePath () {
+    calculatePath() {
       // Dimensions of sunburst.
       var width = 350
       var height = 350
@@ -132,34 +136,22 @@ export default {
         var csv = ProfileData.Ex;
         var json = buildHierarchy(csv);
         createVisualization(json);
-        removeShadow(shadow);
+        // removeShadow(shadow);
+        initShadow(shadow);
 
-        function removeShadow(shadow) {
+        function initShadow(shadow) {
             var tau = 2 * Math.PI;
             var arc = d3.arc()
                 .innerRadius(0)
                 .outerRadius(240)
                 .startAngle(tau);
             
-            var g = shadow;
-            var foreground = g.append("path")
+            self.shadowContent = shadow.append("path")
+                .attr("id", 'shadow-content')
                 .datum({endAngle: 0})
                 .style("fill", "white")
                 .attr("d", arc);
-
-            foreground.transition()
-                .duration(1000)
-                .attrTween("d", arcTween(tau));
-            function arcTween(newAngle) {
-                return function(d) {
-                    var interpolate = d3.interpolate(d.endAngle, newAngle);
-                    return function(t) {
-                    d.endAngle = interpolate(t);
-                    return arc(d);
-                    }
-                }
-            }
-        };
+        }
 
         // Main function to draw and set up the visualization, once we have the data.
         function createVisualization(json) {
@@ -420,6 +412,40 @@ export default {
         }
         return root;
         };
+    },
+    addScrollEvent() {
+        $(window).scroll(Throttle(250, ()=> {
+            let chartT = $('#chart').offset().top,
+                chartH = $('#chart').height(),
+                wH = $(window).height(),
+                wS = $(window).scrollTop();
+            if(wS > (chartT+chartH-wH)){
+                const shadow = $('#shadow');
+                this.removeShadow(shadow);
+                $(window).off('scroll')
+            }
+        }))
+    },
+    removeShadow(shadow) {
+        var tau = 2 * Math.PI;
+        var arc = d3.arc()
+            .innerRadius(0)
+            .outerRadius(240)
+            .startAngle(tau);
+        
+        self.shadowContent.transition()
+            .duration(1000)
+            .attrTween("d", arcTween(tau));
+        
+        function arcTween(newAngle) {
+            return function(d) {
+                var interpolate = d3.interpolate(d.endAngle, newAngle);
+                return function(t) {
+                d.endAngle = interpolate(t);
+                return arc(d);
+                }
+            }
+        }
     }
   }
 }
