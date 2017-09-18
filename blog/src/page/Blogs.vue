@@ -6,19 +6,23 @@
       <div class="blog" v-for="blog in blogs">
             <router-link :to="{ name: 'Edit', query: {id: blog.blogId}}">
               <img v-if="blog.headImg" :src="blog.headImg" width="250px" class="blog-image"> 
-              <div class="blog-content">
-                <h3 class="blog-title">{{blog.title}}</h3>
-                <div class="blog-body">
-                  {{blog.description}}
-                </div>
-              </div>
             </router-link>
+            <div class="blog-content">
+              <h3 class="blog-title">{{blog.title}}</h3>
+              <div class="blog-body">
+                {{blog.description}}
+              </div>
+              <div class="manipulate">
+                <like-component :name="blog.blogId"></like-component>
+              </div> 
+            </div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import Blog from '../model/blog.js'
+import likeComponent from '../components/like/like.vue'
 
 export default {
   name: 'Blogs',
@@ -33,6 +37,9 @@ export default {
     isAdmin: {
       default: false
     }
+  },
+  components: {
+    likeComponent: likeComponent
   },
   methods: {
     async getBlogs() {
@@ -91,6 +98,7 @@ a {
         padding: 20px 0;
         border-top: 1px solid #87a6bc;
         border-bottom: 1px solid #87a6bc;
+        position: relative;
 
           .blog-image {
             object-fit: cover;
@@ -139,6 +147,11 @@ a {
               padding: 0 60px 1px 0px;
               height: 1.4em;
               background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(245, 245, 245, 1));
+            }
+
+            .manipulate {
+              position: absolute;
+              bottom: 20px;
             }
           }
       }
