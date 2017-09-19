@@ -13,7 +13,8 @@
                 {{blog.description}}
               </div>
               <div class="manipulate">
-                <like-component :name="blog.blogId"></like-component>
+                <like-component :id="blog.blogId" @likeChanged="likeChanged"></like-component>
+                {{blog.like}}
               </div> 
             </div>
       </div>
@@ -48,13 +49,20 @@ export default {
         const resultBlogs = result.body.data.blogs;
         if(this.isAdmin) console.log('Get blogs success = ', resultBlogs);
         this.blogs = resultBlogs;
-        console.log(this.blogs)
       }else {
         this.$modal.show('dialog', {
             title: 'Get blogs failed!',
             text: result.body.message
         });
       }
+    },
+
+    likeChanged(params) {
+      let blog = this.blogs.find((blog) => {
+        return blog.blogId === params.id;
+      })
+      if(blog) blog.like = params.like ? blog.like+1 : blog.like-1
+      Blog.likeChanged(params)
     }
   },
   computed: {
@@ -106,13 +114,6 @@ a {
             height: 150px;
             margin-right: 25px;
           }
-
-          // .blog-pic {
-          //   background-size: cover; 
-          //   background-repeat: no-repeat; 
-          //   background-position: center center;
-          //   margin-right: 20px;
-          // }
           
           .blog-content {
             display: inline-block;
@@ -152,6 +153,8 @@ a {
             .manipulate {
               position: absolute;
               bottom: 20px;
+              right: 0px;
+              height: 1.5rem;
             }
           }
       }

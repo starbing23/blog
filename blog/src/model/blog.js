@@ -31,5 +31,9 @@ export default {
     async updateBlog(content) {
         const result = await Vue.http.put(api+'/api/blog/update', content)
         return result;
+    },
+
+    likeChanged(params) {
+        Vue.http.put(api + '/api/blog/likeChanged', params);
     }
 }

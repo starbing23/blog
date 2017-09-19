@@ -1,21 +1,29 @@
 <template>
-<form>
     <span class="heart-container">
-        <input :id='name' class="toggle-heart" type="checkbox" />
-        <label class="heart" :for='name'>❤</label>
+        <input :id='id' class="toggle-heart" type="checkbox" v-model="checked" @change="changed"/>
+        <label class="heart" :for='id'>❤</label>
     </span>
-</form>
 </template>
 <script>
 export default {
   name: 'likeComponent',
   data() {
-      return {}
+      return {
+          checked: false
+      }
   },
   props: {
-      name: {
+      id: {
           default: ''
       }
+  },
+  methods: {
+    changed() {
+        this.$emit('likeChanged', {
+            like: this.checked, 
+            id: this.id
+        });
+    }
   }
 }
 </script>
@@ -133,6 +141,7 @@ $sparkle-r: .5*$sparkle-d;
     width: 1.5em;
     justify-content: center;
     font: 1rem;
+    vertical-align: middle;
 
     .toggle-heart {
         position: absolute;
@@ -172,9 +181,10 @@ $sparkle-r: .5*$sparkle-d;
         align-self: center;
         color: #888;
         // filter: grayscale(1);
-        font-size: 1.5em;
+        font-size: 1.3rem;
         user-select: none;
         cursor: pointer;
+        margin-bottom: 0px;
 
         &:before,
         &:after {
