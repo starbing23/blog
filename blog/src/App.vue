@@ -1,20 +1,20 @@
 <template>
   <div id="app">
     <div class="bg"></div>
-    <b-navbar toggleable type="inverse" variant="">
+    <b-navbar toggleable type="dark" variant="">
       <b-link to="/" class="navbar-brand">
           <span>Bin</span>
       </b-link>
       <b-collapse is-nav id="nav_collapse">
-        <b-nav is-nav-bar class="ml-auto">
-          <b-nav-item v-for="nav in navs">
+        <b-navbar-nav is-nav-bar class="ml-auto">
+          <b-nav-item v-for="nav in navs" :key="nav.name">
             <router-link :to="nav.link" class="nav-link">{{nav.name}}</router-link>
           </b-nav-item>
           <b-nav-item>
             <a href="#" class="nav-link" v-if="!isAdmin" @click="loginModal">Login</a>
             <a href="#" class="nav-link" v-else @click="logout">Logout</a>
           </b-nav-item>
-        </b-nav>
+        </b-navbar-nav>
       </b-collapse>
     </b-navbar>
     <router-view :isAdmin="isAdmin"></router-view>
