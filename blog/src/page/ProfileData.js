@@ -62,12 +62,15 @@ export default {
   },
 
   experiences: [
-    {'company': 'Axxess', 'date': 'Nov 2016 - Present', 'position': 'Front-end Developer'},
+    {'company': 'Axxess', 'date': 'Nov 2016 - Present', 'position': 'Front-end Developer', 
+    'responsibility': ['Building and maintaining key features for AgencyCore with VueJs.',
+      'Handled all front-end work and UI design in AxxessCare team with CanJS.',
+      'Created and promoted reusable and scalable components (e.g. input components, validation system and tabs system), which obviously increased efficiency for front-end team.',
+      'Involving in product design and system organization.']},
     {'company': 'Blackboard Inc., K12 China Division', 'date': 'Oct 2015 - Feb 2016', 'position': 'Software Intern', 
-    'responsibility': ['Cited as “a very talented and dedicated young man with high learning skills and enormous potentials” by the Vice President of Blackboard.',
-      'Independently designed, developed and tested a prototype of cross platform app with Appcelerator Titanium (I reported to VP directly in this project).',
+    'responsibility': ['Independently designed, developed and tested a prototype of cross platform app with Appcelerator Titanium for client side developing and NodeJS for back-end developing.',
       'Developed a web app with HTML/CSS, JavaScript and JQuery.',
-      'Developed web service with PHP and MySQL.']
+      'Cited as “A very talented and dedicated young man with high learning skills and enormous potentials” by the manager.']
     },
     {'company': 'Baina Information Technology Co. Ltd', 'date': 'Sep 2011 - May 2014', 'position': 'Senior HR & Admin Manager', 
     'responsibility': ['Optimized internal HR system in 2013 and reduced 50% Separation Rate over 2012.',

@@ -458,7 +458,8 @@ export default {
     overflow: auto;
 
     .profile-content {
-        width:800px;
+        width:90%;
+        max-width: 1300px;
         background: white;
         overflow: hidden;
         margin: 30px auto;
