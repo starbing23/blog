@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-md-6" style="text-align: left;">
                         <div style="margin-bottom: 10px;"><img src="../img/patient-chart.png" alt="profile-header" width="100%"></div>
-                        <div><strong>Independently design and create patient form, which handle all the patients' information</strong></div>
+                        <div><strong>Independently design and create patient form, which handles all the patients' information</strong></div>
                         <div>Validation system can handle all kinds of errors and require validation</div>
                         <div>Tab system classify data in a huge form and notification system help user to identify error</div>
                     </div>
@@ -23,9 +23,10 @@
                         <div class="row">
                             <div style="margin-bottom: 10px;" class="col-md-6"><img src="../img/order.png" alt="profile-header" width="100%"></div>
                             <div class="col-md-6">
-                                <div><strong>ReCreated order form and so on</strong></div>
-                                <div></div>
-                                <div>Import VueJS and webpack to an exist and old production is a big challenge but worth to do so. It increases lots of performance and is easier to maintenance</div>
+                                <div><strong>Create order form, optimize print system and so on</strong></div>
+                                <div>Order form is a core form for AgencyCore and has lots of interactive with other forms</div>
+                                <div>Optimize print system and redo most of print pages for new feature in agencyCore</div>
+                                <div>Support other front-end developer in their projects</div>
                             </div>
                         </div>
                     </div>
