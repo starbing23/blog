@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const api = 'http://localhost:3002'
+const api = 'http://localhost:8080'
 
 export default {
     async getBlog(id) {

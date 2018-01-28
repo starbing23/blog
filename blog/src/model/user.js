@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueResource from 'vue-resource'
 Vue.use(VueResource);
 
-const api = 'http://localhost:3002'
+const api = 'http://localhost:8080'
 
 export default {
     async login(params) {
