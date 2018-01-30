@@ -5,11 +5,11 @@
       <h3 v-else class="noEdit-title">{{title}}</h3>
       <div class="quill-editor">
         <!-- quill-editor -->
-        <quill-editor v-show="isAdmin" ref="myTextEditor"
+        <quill-editor v-if="isAdmin" ref="myTextEditor"
                       v-model="content"
                       :options="editorOption">
         </quill-editor>
-        <quill-editor v-show="!isAdmin" ref="myTextReader"
+        <quill-editor v-if="!isAdmin" ref="myTextReader"
                       v-model="content"
                       :options="readerOption">
         </quill-editor>
@@ -25,16 +25,17 @@
   </div>
 </template>
 <script>
-import Quill from 'quill'
-import { ImageImport } from './ImageImport.js'
-import { ImageResize } from './ImageResize.js'
+import {quillEditor, Quill} from 'vue-quill-editor'
+import {container, ImageExtend} from 'quill-image-extend-module'
+import ImageResize from 'quill-image-resize-module'
 import blogModel from './../../model/blog.js'
 
-Quill.register('modules/imageImport', ImageImport)
-Quill.register('modules/imageResize', ImageResize)
+Quill.register('modules/ImageExtend', ImageExtend)
+Quill.register('modules/ImageResize', ImageResize)
 
 export default {
   name: 'Edit',
+  components: {quillEditor},
   data () {
     return {
       title: '',
@@ -42,9 +43,24 @@ export default {
       readOnly: false,
       editorOption: {
         modules: {
-          imageImport: true,
-          imageResize: {
-            displaySize: true
+          ImageResize: {},
+          ImageExtend: {
+            loading: true,
+            name: 'img',
+            size: 2,  // 单位为M, 1M = 1024KB
+            headers: (xhr) => {
+            },
+            response: (res) => {
+              return res.info
+            }
+          },
+          toolbar: {
+            container: container,
+            handlers: {
+              'image': function () {
+                document.querySelector('.quill-image-input').click()
+              }
+            }
           }
         }
       },

@@ -4,19 +4,21 @@
       <h3 class="blog-new"><strong>Newest Blogs</strong></h3>
       <router-link :to="{ name: 'Edit'}" v-if="isAdmin"><button class="creat-button btn btn-primary float-right">Create</button></router-link>
       <div class="blog" v-for="blog in blogs">
-            <router-link :to="{ name: 'Edit', query: {id: blog.blogId}}">
-              <img v-if="blog.headImg" :src="blog.headImg" width="250px" class="blog-image"> 
-            </router-link>
-            <div class="blog-content">
-              <h3 class="blog-title">{{blog.title}}</h3>
-              <div class="blog-body">
-                {{blog.description}}
-              </div>
-              <div class="manipulate">
-                <like-component :id="blog.blogId" @likeChanged="likeChanged"></like-component>
-                {{blog.like}}
-              </div> 
+        <router-link :to="{ name: 'Edit', query: {id: blog.blogId}}">
+          <img v-if="blog.headImg" :src="blog.headImg" width="250px" class="blog-image"> 
+        </router-link>
+        <div class="blog-content">
+          <router-link :to="{ name: 'Edit', query: {id: blog.blogId}}">
+            <h3 class="blog-title">{{blog.title}}</h3>
+            <div class="blog-body">
+              {{blog.description}}
             </div>
+          </router-link>
+          <div class="manipulate">
+            <like-component :id="blog.blogId" @likeChanged="likeChanged"></like-component>
+            {{blog.like}}
+          </div> 
+        </div>
       </div>
     </div>
   </div>
@@ -76,6 +78,10 @@ export default {
 a {
   text-decoration: none;
   color: black;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .blogs {

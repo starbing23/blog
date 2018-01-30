@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueResource from 'vue-resource'
 Vue.use(VueResource);
 
-const api = process.env.NODE_ENV === 'development' ? 'http://localhost:8090' : 'http://localhost:8080'
+const api = process.env.NODE_ENV === 'development' ? 'http://localhost:8090' : document.location.origin;
 
 export default {
     async login(params) {
