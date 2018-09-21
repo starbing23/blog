@@ -8,10 +8,12 @@ import VueResource from 'vue-resource'
 import router from './router'
 import VModal from 'vue-js-modal'
 import Session from './router/session.js'
+import VueCookies from 'vue-cookies'
 
 Vue.component('icon', Icon)
-Vue.use(VueResource);
+Vue.use(VueResource)
 Vue.use(VModal, {dialog: true})
+Vue.use(VueCookies)
 
 Vue.http.options.credentials = true;
 Vue.http.options.crossOrigin = true;
