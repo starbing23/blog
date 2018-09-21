@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const api = 'http://localhost:3002'
+const api = process.env.NODE_ENV === 'development' ? 'http://localhost:8090' : document.location.origin;
 
 export default {
     async getBlog(id) {
